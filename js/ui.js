@@ -31,12 +31,10 @@ function renderSummary(entries) {
   const { debt, paid, open, percent } = summarize(entries);
   el('open-label').textContent = open < 0 ? 'Dein Guthaben' : 'Noch offen';
   el('open-amount').textContent = formatCents(Math.abs(open));
-  el('paid-amount').textContent = formatCents(paid);
-  el('debt-amount').textContent = formatCents(debt);
 
-  let status = `${percent} % zurückgezahlt`;
+  let status = `${formatCents(paid)} von ${formatCents(debt)} geschafft`;
   if (debt === 0) status = 'Noch keine Schulden eingetragen';
-  else if (open <= 0) status = 'Alles zurückgezahlt';
+  else if (open <= 0) status = `Alles zurückgezahlt: ${formatCents(paid)}`;
   el('status').textContent = status;
   el('progress-fill').style.width = `${percent}%`;
 }
@@ -49,7 +47,7 @@ function renderMonths(entries) {
   el('months').replaceChildren(...months.map((month) => {
     const item = create('li', 'month');
     const value = month.cents ? `${Math.round(month.cents / 100).toLocaleString('de-DE')} €` : '';
-    const bar = create('span', 'month-bar');
+    const bar = create('span', month.cents ? 'month-bar filled' : 'month-bar');
     bar.style.height = `${(month.cents / max) * 100}%`;
     const track = create('span', 'month-track');
     track.append(bar);
