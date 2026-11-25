@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
-  <meta name="theme-color" content="#dcecf7">
+  <meta name="theme-color" content="#ffffff">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Schulden">
-  <title>Schuldenberg</title>
+  <title>Schulden</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-180.png">
@@ -19,38 +19,25 @@
     <header class="hero">
       <h1 id="open-label">Noch offen</h1>
       <p id="open-amount" class="open-amount">0,00 €</p>
+      <div class="progress" aria-hidden="true"><div id="progress-fill"></div></div>
       <p id="status" class="status"></p>
-
-      <svg class="mountain" viewBox="0 0 360 180" aria-hidden="true">
-        <defs>
-          <clipPath id="peak">
-            <path d="M0 180 L92 76 L128 104 L196 8 L262 96 L292 72 L360 180 Z"/>
-          </clipPath>
-        </defs>
-        <g clip-path="url(#peak)">
-          <rect class="rock" width="360" height="180"/>
-          <path class="snow" d="M196 8 L232 56 L214 50 L200 64 L184 48 L164 54 Z"/>
-          <rect id="mountain-fill" class="meadow" y="180" width="360" height="180"/>
-        </g>
-        <path id="flag" class="flag" d="M196 10 V0 L216 5 L196 10 Z"/>
-      </svg>
     </header>
 
     <p id="message" class="message" role="status"></p>
 
     <dl class="totals">
       <div><dt>Zurückgezahlt</dt><dd id="paid-amount" class="payment">0,00 €</dd></div>
-      <div><dt>Insgesamt geliehen</dt><dd id="debt-amount">0,00 €</dd></div>
+      <div><dt>Geliehen</dt><dd id="debt-amount">0,00 €</dd></div>
     </dl>
 
-    <section aria-labelledby="months-title">
-      <h2 id="months-title">Rückzahlungen der letzten 6 Monate</h2>
+    <section id="months-section" aria-labelledby="months-title">
+      <h2 id="months-title">Rückzahlungen, letzte 6 Monate</h2>
       <ol id="months" class="months"></ol>
     </section>
 
     <section aria-labelledby="history-title">
       <h2 id="history-title">Verlauf</h2>
-      <p id="empty" class="empty">Noch nichts eingetragen. Tippe unten auf „Schuld“.</p>
+      <p id="empty" class="empty">Noch nichts eingetragen. Tippe unten auf „Neue Schuld“.</p>
       <ul id="history" class="history"></ul>
     </section>
 
@@ -67,8 +54,8 @@
   </main>
 
   <nav class="actions" aria-label="Eintragen">
-    <button type="button" id="add-debt" class="secondary">+ Schuld</button>
-    <button type="button" id="add-payment" class="primary">+ Rückzahlung</button>
+    <button type="button" id="add-debt" class="secondary">Neue Schuld</button>
+    <button type="button" id="add-payment" class="primary">Rückzahlung</button>
   </nav>
 
   <dialog id="dialog" aria-labelledby="form-title">

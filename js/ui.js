@@ -4,9 +4,6 @@ import { formatCents, monthlyPayments, sortByDate, summarize } from './logic.js'
 
 /** @typedef {import('./logic.js').Entry} Entry */
 
-const MOUNTAIN_TOP = 8;
-const MOUNTAIN_BOTTOM = 180;
-
 /** @param {string} id */
 export function el(id) {
   const node = document.getElementById(id);
@@ -37,19 +34,17 @@ function renderSummary(entries) {
   el('paid-amount').textContent = formatCents(paid);
   el('debt-amount').textContent = formatCents(debt);
 
-  let status = `${percent} % abgetragen`;
-  if (debt === 0) status = 'Trage deine erste Schuld ein.';
-  else if (open <= 0) status = 'Geschafft, alles zurückgezahlt! 🎉';
+  let status = `${percent} % zurückgezahlt`;
+  if (debt === 0) status = 'Noch keine Schulden eingetragen';
+  else if (open <= 0) status = 'Alles zurückgezahlt';
   el('status').textContent = status;
-
-  const height = ((MOUNTAIN_BOTTOM - MOUNTAIN_TOP) * percent) / 100;
-  el('mountain-fill').style.transform = `translateY(${-height}px)`;
-  el('flag').classList.toggle('visible', debt > 0 && open <= 0);
+  el('progress-fill').style.width = `${percent}%`;
 }
 
 /** @param {Entry[]} entries */
 function renderMonths(entries) {
   const months = monthlyPayments(entries, new Date());
+  el('months-section').hidden = months.every((m) => m.cents === 0);
   const max = Math.max(...months.map((m) => m.cents), 1);
   el('months').replaceChildren(...months.map((month) => {
     const item = create('li', 'month');
@@ -71,13 +66,13 @@ function renderHistory(entries, onDelete) {
     const isPayment = entry.type === 'payment';
     const title = entry.note || (isPayment ? 'Rückzahlung' : 'Schuld');
     const date = new Date(`${entry.date}T00:00`).toLocaleDateString('de-DE', {
-      day: 'numeric', month: 'long', year: 'numeric',
+      day: 'numeric', month: 'short', year: 'numeric',
     });
 
     const text = create('div', 'entry-text');
     text.append(
       create('span', 'entry-title', title),
-      create('span', 'entry-date', `${isPayment ? 'Zurückgezahlt' : 'Geliehen'} am ${date}`),
+      create('span', 'entry-date', `${isPayment ? 'Zurückgezahlt' : 'Geliehen'}, ${date}`),
     );
     const amount = create('span', `entry-amount ${entry.type}`,
       `${isPayment ? '−' : '+'}${formatCents(entry.cents)}`);
