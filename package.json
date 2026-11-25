@@ -1,0 +1,9 @@
+{
+  "name": "schuldenberg",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "start": "python -m http.server 5173 --bind 127.0.0.1"
+  }
+}
